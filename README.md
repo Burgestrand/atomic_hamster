@@ -17,17 +17,18 @@ When writing threaded code, the [Atomic](http://rubygems.org/gems/atomic)[ ](htt
 ```ruby
 require "atomic_hamster"
 
-hash = Atomic.new(Hamster.list)
+container = Atomic.new(Hamster.list)
+iterations = 1_000
 
-1000.times.map do |i|
+iterations.times.map do |i|
   Thread.new do
-    hash.update do |list|
+    container.update do |list|
       list.cons(i)
     end
   end
 end.map(&:join)
 
-puts hash.value.length # => 1000
+puts container.value.length # => 1000
 ```
 
 ## Credits
