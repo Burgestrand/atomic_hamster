@@ -6,6 +6,7 @@ iterations = 1_000
 
 iterations.times.map do |i|
   Thread.new do
+    sleep(rand)
     container.update do |list|
       list.cons(i)
     end
