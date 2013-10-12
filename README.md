@@ -1,29 +1,35 @@
-# AtomicHamster
+# Atomic Hamster
 
-TODO: Write a gem description
+> Because naming things is sometimes funny.
 
-## Installation
+We have:
 
-Add this line to your application's Gemfile:
+- [Atomic](http://rubygems.org/gems/atomic): <https://github.com/headius/ruby-atomic>
 
-    gem 'atomic_hamster'
+  An atomic reference implementation for JRuby, Rubinius, and MRI.
 
-And then execute:
+- [Hamster](http://rubygems.org/gems/hamster): <https://github.com/harukizaemon/hamster>
 
-    $ bundle
+  Efficient, Immutable, Thread-Safe Collection classes for Ruby.
 
-Or install it yourself as:
+When writing threaded code, the [Atomic](http://rubygems.org/gems/atomic)[ ](http://rubygems.org/gems/atomic_hamster)[Hamster](http://rubygems.org/gems/hamster) guards and protects your shared mutable state.
 
-    $ gem install atomic_hamster
+```ruby
+require "atomic_hamster"
 
-## Usage
+hash = Atomic.new(Hamster.list)
 
-TODO: Write usage instructions here
+1000.times.map do |i|
+  Thread.new do
+    hash.update do |list|
+      list.cons(i)
+    end
+  end
+end.map(&:join)
 
-## Contributing
+puts hash.value.length # => 1000
+```
 
-1. Fork it
-2. Create your feature branch (`git checkout -b my-new-feature`)
-3. Commit your changes (`git commit -am 'Add some feature'`)
-4. Push to the branch (`git push origin my-new-feature`)
-5. Create new Pull Request
+## Credits
+
+All credits go to the [Atomic](http://rubygems.org/gems/atomic)[ ](http://rubygems.org/gems/atomic_hamster)[Hamster](http://rubygems.org/gems/hamster). I did not do anything.
